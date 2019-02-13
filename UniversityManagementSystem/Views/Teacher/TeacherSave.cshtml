@@ -1,0 +1,115 @@
+﻿@model UniversityManagementSystem.Models.Teacher
+@*@using UniversityManagementSystem.Models*@
+
+@{
+    Layout = null;
+    ViewBag.Title = "TeacherSave";
+    //List<SelectListItem> departments = ViewBag.Departments;  //new add
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+    @********************************** For 4th Story *****************************************************@
+
+    <h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">Teacher Save</h1>
+
+    <div style="width: 550px; margin-left: 400px; margin-top: 80px">
+
+        @if (ViewBag.Message != null)
+        {
+            <h3 style="color: red">@ViewBag.Message</h3>
+        }
+
+        @using (Html.BeginForm("TeacherSave", "Teacher", FormMethod.Post, new { id = "MyForm" }))
+        {
+            <br/><br />
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(x => x.TeacherName)</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.TeacherName)
+                        @Html.ValidationMessageFor(x => x.TeacherName)
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.Address)</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.Address)
+                        @Html.ValidationMessageFor(x => x.Address)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.Email)</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.Email)
+                        @Html.ValidationMessageFor(x => x.Email)
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.ContactNo)</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.ContactNo)
+                        @Html.ValidationMessageFor(x => x.ContactNo)
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.DesignationId)</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DesignationId, new SelectList(ViewBag.designations, "Value", "Text"), "--Select--")
+                        @Html.ValidationMessageFor(x => x.DesignationId)
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.DepartmentId)</td>
+                    @*<td>@Html.Label("Department")</td>*@
+                    <td>
+                        @Html.DropDownListFor(x => x.DepartmentId, new SelectList(ViewBag.departments, "Value", "Text"))
+                        @Html.ValidationMessageFor(x => x.DepartmentId)
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.CreditTaken)</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CreditTaken)
+                        @Html.ValidationMessageFor(x => x.CreditTaken)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="submit" value="Save" />
+                    </td>
+                </tr>
+
+            </table>
+        }
+
+    </div>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+@*</body>
+</html>*@
+
+
+
+
+
+
+
+
+

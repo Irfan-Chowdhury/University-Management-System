@@ -1,0 +1,89 @@
+﻿@using UniversityManagementSystem.Models
+@model IEnumerable<UniversityManagementSystem.Models.Department>
+@{
+    Layout = null;
+    ViewBag.Title = "GetAllDepartments";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+    </style>
+
+
+    @********************************** For 2nd Story *****************************************************@
+
+    <h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">View All Departments</h1>
+
+    <div style="width: 550px; margin-left: 400px; margin-top: 80px">
+        @using (Html.BeginForm("GetAllDepartments", "Department", FormMethod.Post, new { id = "MyForm" }))
+        {                                                         @*[Here Action=GetAllDepartments,Controller=Department, if i use class then- new{id="MyForm",@class="className"} ]*@
+
+            <table border="1">
+                <tr>
+                    <th>Department Code</th>
+                    <th>Department Name</th>
+                </tr>
+
+                
+                    @foreach (Department department in Model)
+                    {
+                      <tr>
+
+                        <td>@department.DepartmentCode</td>
+                        <td>@department.DepartmentName</td>
+                         
+                      </tr>
+
+                    }
+                
+            </table>
+        }
+
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+        @*<table>
+                <tr>
+                    <th>Code</th>
+                    <th> Name</th>
+                </tr>
+
+                @foreach (Department department in Model)
+                {
+                    <tr>
+
+                        <td>@department.Code</td>
+                        <td>@department.Name</td>
+                    </tr>
+
+                }
+            </table>*@
+
+@*</body>
+</html>*@
+

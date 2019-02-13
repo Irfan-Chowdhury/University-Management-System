@@ -1,0 +1,205 @@
+﻿
+@{
+    Layout = null;
+    List<SelectListItem> RegistrationNoget = ViewBag.RegistrationNo;
+    
+}
+
+@*<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EnrollCourse</title>
+</head>
+<body>*@
+
+    @********************************** For 10th Story *****************************************************@
+
+<h1 style="text-align: center; color: #27BDB2; display: block; font-size: 2em; margin-top: 1.67em; font-weight: bold">Enroll In A Course</h1>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+<div style="width: 550px; margin-left: 400px; margin-top: 80px">
+
+    <table>
+        <tr>
+            <td>
+                <label id="registrationDropDownLabel"> Student Reg. No</label>
+            </td>
+            <td>
+                @Html.DropDownList("RegistrationNo", new SelectList(RegistrationNoget, "Value", "Text"))
+                @Html.ValidationMessage("RegistrationNoget")
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="StudentId"> Name</label>
+            </td>
+            <td>
+                <input type="text" name="StudentName" id="StudentName" readonly="readonly" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="emailLabel"> Email</label>
+            </td>
+            <td>
+                <input type="text" name="StudentEmail" id="StudentEmail" readonly="readonly" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="DepartmentId"> Department</label>
+            </td>
+            <td>
+                <input type="text" name="DepartmentName" id="DepartmentName" readonly="readonly" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="selectCourseLabel"> Select Course</label>
+            </td>
+            <td>
+                <select name="courseId" id="courseId">
+                    <option value="">Select Course</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Date</label>
+            </td>
+            <td>
+                <input type="text" name="DateValue" id="DateValue" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" id="submit" name="submit" value="Enroll" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="SucessMessage"></label>
+            </td>
+        </tr>
+    </table>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+
+
+    <script>
+        var StudentId;
+        var DeptId;
+        $('#DateValue').datepicker({
+            autoclose: true
+        });
+
+
+        $(document).ready(function() {
+
+            $('#RegistrationNo').change(function() {
+
+                var registrationNo = $('#RegistrationNo').val();
+                var json = { regNo: registrationNo };
+
+                $.ajax({
+                    type: "POST",
+
+                    url: '@Url.Action("GetStudent", "EnrollCourse")',
+                    //url: '/Department/GetStudentsByDepartmentId',
+
+                    contentType: "application/json; charset=utf-8",
+
+                    data: JSON.stringify(json),
+
+                    success: function(data) {
+                        $("#courseId").empty("");
+
+
+                        $("#StudentName").val("");
+                        $("#StudentEmail").val("");
+                        $("#DepartmentName").val("");
+
+                        $("#courseId").append('<option value=' + "" + '>' + "Select Course" + '</option>');
+
+                        $.each(data, function(key, value) {
+                            $("#StudentName").val(value.StudentName);
+                            $("#StudentEmail").val(value.StudentEmail);
+                            $("#DepartmentName").val(value.DepartmentName);
+                            if (value.CourseId == 0) {
+                                // $("#courseId").append('<option value=' + value.CourseId + '>' +  + '</option>');
+                            } else {
+                                $("#courseId").append('<option value=' + value.CourseId + '>' + value.CourseName + '</option>');
+
+                            }
+                            //$("#courseId").append('<option value=' + value.CourseId + '>' + value.CourseName + '</option>');
+                            //$("#StudentDetails").append('<tr> <td>'+value.StudentName+'</td>   <td>'+value.Address+'</td>   <td>'+value.DepartmentName+'</td></tr>');
+                            StudentId = value.StudentId;
+                            DeptId = value.DepartmentId;
+                        });
+
+                    }
+                });
+
+            });
+
+
+            $('#submit').click(function() {
+                if ($('#courseId').val() == "") {
+                    alert('Please Select Reg No. & Course');
+                } else if ($('#DateValue').val() == "") {
+                    alert('Please Select Date');
+                } else {
+
+                    var courseId = $("#courseId").val();
+                    var dateValue = $("#DateValue").val();
+
+
+                    var json = { studentId: StudentId, courseId: courseId, dateValue: dateValue, deptId: DeptId };
+                    console.log(json);
+
+                    $.ajax({
+                        type: "POST",
+
+                        url: '@Url.Action("GetInfo", "EnrollCourse")',
+
+                    contentType: "application/json; charset=utf-8",
+
+                    data: JSON.stringify(json),
+
+                    success: function(data) {
+                        console.log("data=" + data);
+                        $("#SucessMessage").text(data);
+
+                        //if (courseId != null) {
+                        //    $("#SucessMessage").text("Save Successful");
+                        //}
+                        $("#DateValue").val("");
+
+                        $.each(data, function(key, value) {
+
+
+                        });
+
+                    }
+                    });
+}
+            });
+
+
+        });
+
+
+    </script>
+</div>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+@*</body>
+</html>*@

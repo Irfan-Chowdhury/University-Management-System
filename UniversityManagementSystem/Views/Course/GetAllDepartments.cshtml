@@ -1,0 +1,113 @@
+﻿@using System.Collections.Generic
+@using UniversityManagementSystem.Models
+
+@{
+    Layout = null;
+    List<SelectListItem> departments = ViewBag.Departmentss;
+}
+
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+
+
+
+<h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">View Course Statics</h1>
+
+<div style="width: 550px; margin-left: 400px; margin-top: 80px">
+    @Html.Label("Department  ")
+    @Html.DropDownList("DepartmentDD", new SelectList(departments, "Value", "Text"))
+
+
+
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Semester</th>
+                <th>Assign to</th>
+            </tr>
+
+        </thead>
+        <tbody id="tableShow"></tbody>
+    </table>
+
+
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#DepartmentDD').change(function () {
+                console.log("Hello");
+
+                var departmentDropdown = $('#DepartmentDD').val();
+                // console.log(registrationNo);
+
+                var json = { deptName: departmentDropdown };
+                console.log(json);
+
+
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: '@Url.Action("GetCourseStatitics", "Course")',
+                    //url: '/Department/GetStudentsByDepartmentId',
+
+                    contentType: "application/json; charset=utf-8",
+
+                    data: JSON.stringify(json),
+
+                    success: function (data) {
+
+                        $("#tableShow").empty();
+
+
+
+
+                        $.each(data, function (key, value) {
+                            //$("StudentIdl").append(value.Email);
+                            if (!value.TeacherName) {
+                                value.TeacherName = 'Not Assign yet';
+                            }
+
+                            $("#tableShow").append('<tr> <td>' + value.CourseCode + '</td>   <td>' + value.CourseName + '</td>   <td>' + value.Semester + '</td>   <td>' + value.TeacherName + '</td></tr>');
+
+
+
+                            //$("#Email").val(value.Email);
+                            //$("#StudentId").append('<option value=' + value.Id + '>' + value.Email + '</option>');
+                        });
+
+
+
+                    }
+                });
+
+            });
+        });
+    </script>
+
+
+</div>
+
+</body>
+</html>

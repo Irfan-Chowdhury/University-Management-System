@@ -1,0 +1,83 @@
+﻿@model UniversityManagementSystem.Models.Department
+@{
+    Layout = null;
+    ViewBag.Title = "Save";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+    @********************************** For 1st Story *****************************************************@
+
+    <h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">Department Save</h1>
+
+<div style="width: 560px; margin-left: 400px; margin-top: 80px">
+   
+
+    @if (ViewBag.Message != null)
+    {
+        <h3 style="color: red">@ViewBag.Message</h3>
+    }
+    
+    @using (Html.BeginForm("Save", "Department", FormMethod.Post, new {id = "MyForm"}))
+    {
+        <br/><br/>
+        <table>
+            <tr>
+                <td>
+                    @Html.Label("Department Code")
+                </td>
+
+                <td>
+                    @Html.TextBoxFor(x => x.DepartmentCode)
+                    @Html.ValidationMessageFor(x => x.DepartmentCode) <br /><br />   @*for Validation*@
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Department Name")
+                </td>
+                <td>
+                    @Html.TextBoxFor(x => x.DepartmentName)
+                    @Html.ValidationMessageFor(x => x.DepartmentName)
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="submit" value="Save"/>
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+
+    @*<form id="itemSaveForm" method="POST">
+        <table>
+            <tr>
+                <td><label for="code">Department Code</label></td>
+                <td><input type="text" id="code" name="code" /></td>
+            </tr>
+
+            <tr>
+                <td><label for="name">Department Name</label></td>
+                <td><input type="text" id="name" name="name" /></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="submit" />
+                </td>
+            </tr>
+        </table>
+    </form>*@
+
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+@*</body>
+</html>*@
+

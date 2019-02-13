@@ -1,0 +1,73 @@
+﻿
+@{
+    Layout = null;
+    List<SelectListItem> departments = ViewBag.Departments;
+    
+}
+
+@*<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewClassAndRoomByDeptId</title>
+</head>
+<body>*@
+
+@********************************** For 9th Story *****************************************************@
+
+<h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">View Class And Room Info</h1>
+
+
+<div style="width: 550px; margin-left: 400px; margin-top: 80px">
+
+    @Html.DropDownList("DeptId", new SelectList(departments, "Value", "Text"))
+
+    <br/>
+    <br/>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <td>CourseCode</td>
+            <td>CourseName</td>
+            <td>RoomNo</td>
+            <td>DayName</td>
+            <td>FormTime</td>
+            <td>ToTime</td>
+        </tr>
+        </thead>
+        <tbody id="ClassRoomInfo"></tbody>
+    </table>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#DeptId').change(function() {
+                var departmentId = $('#DeptId').val();
+                console.log(departmentId);
+
+                var json = { deptId: departmentId }
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetClassAndRoomByDeptId", "ClassScheduleAndRoomAllocationInformation")',
+
+                    contentType: "application/json; charset=utf-8",
+
+                    data: JSON.stringify(json),
+                    success: function(data) {
+                        $("#ClassRoomInfo").empty();
+                        //$("#CourseId").append('<option value=""> --Select--</option>');
+                        $.each(data, function(key, value) {
+                            $("#ClassRoomInfo").append('<tr> <td>' + value.CourseCode + '</td> <td>' + value.CourseName + '</td> <td>' + value.RoomNo + '</td> <td>' + value.DayName + '</td> <td>' + value.FromTime + '</td> <td>' + value.ToTime + '</td> </tr>');
+                        });
+                    }
+                });
+
+            });
+        })
+    </script>
+</div>
+
+@*</body>
+</html>*@

@@ -1,0 +1,164 @@
+﻿
+@{
+    Layout = null;
+    List<SelectListItem> RegistrationNoget = ViewBag.RegistrationNo;
+    
+}
+
+@*<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewStudentResult</title>
+</head>
+<body>*@
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+
+@********************************** For 12th Story *****************************************************@
+
+<h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">View Student Result</h1>
+
+<div style="width: 550px; margin-left: 400px; margin-top: 80px">
+    
+        <table>
+            <tr>
+                <td>
+                    <label id="RegNo"> Student Reg No. </label>
+                </td>
+                <td>
+                    @Html.DropDownList("RegistrationNo", new SelectList(RegistrationNoget, "Value", "Text"))
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="NameLabel"> Name</label>
+                </td>
+                <td>
+                    <input type="text" name="StudentName" id="StudentName" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="emailLabel"> Email</label>
+                </td>
+                <td>
+                    <input type="text" name="StudentEmail" id="StudentEmail" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label id="departmentLabel"> Department</label>
+                </td>
+                <td>
+                    <input type="text" name="DepartmentName" id="DepartmentName" readonly="readonly" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Make PDF" onclick="printDiv('printableArea')" />
+                </td>
+            </tr>
+        </table>
+
+        <div id="printableArea">
+        <table border="1">
+            <thead>
+                <tr>
+                    <td>Course Code</td>
+                    <td>Name</td>
+                    <td>Grade</td>
+
+                </tr>
+            </thead>
+            <tbody id="tableResult"></tbody>
+        </table>
+        </div>
+
+
+
+
+
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                $('#RegistrationNo').change(function () {
+
+                    var registrationNo = $('#RegistrationNo').val();
+
+                    var json = { regNo: registrationNo };
+
+                    $.ajax({
+                        type: "POST",
+
+                        url: '@Url.Action("GetStudent", "ViewResult")',
+                        //url: '/Department/GetStudentsByDepartmentId',
+
+                        contentType: "application/json; charset=utf-8",
+
+                        data: JSON.stringify(json),
+
+                        success: function (data) {
+                            $("#tableResult").empty();
+                            $("#StudentName").val("");
+                            $("#StudentEmail").val("");
+                            $("#DepartmentName").val("");
+
+
+                            $.each(data, function (key, value) {
+                                $("#StudentName").val(value.StudentName);
+                                $("#StudentEmail").val(value.StudentEmail);
+                                $("#DepartmentName").val(value.DepartmentName);
+                                if (!value.Grade) {
+                                    value.Grade = "Not Graded Yet";
+                                }
+                                $("#tableResult").append('<tr> <td>' + value.CourseCode + '</td>   <td>' + value.CourseName + '</td>   <td>' + value.Grade + '</td></tr>');
+
+
+                                //$("#StudentId").append('<option value=' + value.StudentId + '>' + value.StudentName + '</option>');
+                                //$("#StudentDetails").append('<tr> <td>'+value.StudentName+'</td>   <td>'+value.Address+'</td>   <td>'+value.DepartmentName+'</td></tr>');
+
+                            });
+
+                        }
+                    });
+
+                });
+            });
+
+            //******************* Make Pdf ****************************
+
+            function printDiv(divName) {
+                var printContents = document.getElementById(divName).innerHTML;
+                var originalContents = document.body.innerHTML;
+
+                document.body.innerHTML = printContents;
+
+                window.print();
+
+                document.body.innerHTML = originalContents;
+            }
+        </script>
+</div>
+
+
+
+@*</body>
+</html>*@

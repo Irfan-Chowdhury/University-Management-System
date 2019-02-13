@@ -1,0 +1,196 @@
+﻿@using UniversityManagementSystem.Models.ViewModels
+@model DepartmentViewModel
+@{
+    Layout = null;
+    List<SelectListItem> departments = ViewBag.Departments;
+    List<SelectListItem> courses = ViewBag.Courses;
+    List<SelectListItem> rooms = ViewBag.Rooms;
+    List<SelectListItem> day = ViewBag.Day;
+
+}
+
+@*<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewDepartmentByDepartmentId</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/jquery.timepicker.css" rel="stylesheet" />
+</head>
+
+<body>*@
+
+
+    @********************************** For 8th Story *****************************************************@
+
+    <h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">Class Room Allocation</h1>
+
+
+    <div style="width: 550px; margin-left: 400px; margin-top: 80px">
+        @if (ViewBag.Message != null)
+        {
+            <h3 style="color: red">@ViewBag.Message</h3>
+        }
+        @using (Html.BeginForm("ClassroomAllocation", "ClassRoomAlocation", FormMethod.Post, new { id = "MyForm" }))
+        {
+
+
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(x => x.DeptId)
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.DeptId, new SelectList(departments, "Value", "Text"))
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(x => x.CourseId)
+                    </td>
+
+                    @*<td>
+                            @Html.DropDownListFor(x => x.CourseId, new SelectList(""), "--Select--")
+                        </td>*@
+                    <td>
+                        <select id="CourseId" name="CourseId">
+                            <option>--Select--</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.LabelFor(x => x.RoomId)
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.RoomId, new SelectList(rooms, "Value", "Text"))
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.LabelFor(x => x.DayId)
+                    </td>
+
+                    <td>
+                        @Html.DropDownListFor(x => x.DayId, new SelectList(day, "Value", "Text"))
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <label for="FromTime">FromTime</label>
+                    </td>
+                    <td>
+                        <input type="text" id="FromTime" name="FromTime" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label for="ToTime">ToTime</label>
+                    </td>
+                    <td>
+                        <input type="text" id="ToTime" name="ToTime" />
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td><input type="submit" value="Allocate" /></td>
+                </tr>
+
+
+
+
+            </table>
+        }
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/moment.js"></script>
+        <script src="~/Scripts/bootstrap-datetimepicker.js"></script>
+        <script src="~/Scripts/jquery.timepicker.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        @*<script type="text/javascript">
+                $(function () {
+                    $('#FromTime').datetimepicker({
+                        viewMode: 'years',
+                        format: 'MM/YYYY'
+
+                    });
+                });
+            </script>*@
+
+
+
+        <script>
+            $('#FromTime').timepicker({ 'scrollDefault': 'now' });
+
+        </script>
+
+
+        <script>
+            $('#ToTime').timepicker({ 'scrollDefault': 'now' });
+
+        </script>
+
+
+
+        <script>
+            
+            $("#MyForm").validate({
+                rules: {
+                    DeptId: "required",
+                    CourseId: "required",
+                    RoomId: "required",
+                    DayId: "required",
+                    FromTime: "required",
+                    ToTime: "required"
+
+                },
+                messages: {
+                    DeptId: "Please Select Department",
+                    CourseId: "Please Select Course",
+                    RoomId: "Please Select Room",
+                    DayId: "Please Select Department",
+                    FromTime: "Please Select Time",
+                    ToTime: "Please Select Time"
+
+                }
+            });
+
+            $(document).ready(function () {
+                $('#DeptId').change(function () {
+                    var departmentId = $('#DeptId').val();
+
+
+                    //<-----------cascadding dropdownlist---------------->//
+                    var json = { departmentId: departmentId }
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("GetCourseByDepartmentId", "ClassRoomAlocation")',
+
+                        contentType: "application/json; charset=utf-8",
+
+                        data: JSON.stringify(json),
+                        success: function (data) {
+                            $("#CourseId").empty();
+                            $("#CourseId").append('<option value=""> --Select--</option>');
+                            $.each(data, function (key, value) {
+                                $("#CourseId").append('<option value=' + value.CourseId + '>' + value.CourseName + '</option>');
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+    </div>
+
+
+@*</body>
+</html>*@

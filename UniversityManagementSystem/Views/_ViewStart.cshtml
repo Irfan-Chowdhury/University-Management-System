@@ -1,0 +1,92 @@
+﻿@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/jquery.timepicker.css" rel="stylesheet" />
+
+    <style>
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+@******************************  For Nevbar ********************************************@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">BugBites</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="http://localhost:50735">Home</a></li>
+
+            @***************  Department Related ***************@
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Department<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="http://localhost:50735/Department/Save">Department Save</a></li>
+                    <li><a href="http://localhost:50735/Department/GetAllDepartments">View Depertment</a></li>
+                </ul>
+            </li>
+
+            @***************  Course Related ***************@
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Course<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="http://localhost:50735/Course/CourseSave">Course Save</a></li>
+                    <li><a href="http://localhost:50735/CourseAssign/UnAssignCourse">Unassign All Courses</a></li>
+                    <li><a href="http://localhost:50735/Course/GetAllDepartments">View Course Statistics</a></li>
+                </ul>
+            </li>
+
+            @***************  Teacher Related ***************@
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Teacher<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="http://localhost:50735/Teacher/TeacherSave">Teacher Save</a></li>
+                    <li><a href="http://localhost:50735/CourseAssign/CourseAssign">Course Assign To Teacher</a></li>
+                </ul>
+            </li>
+
+
+            @***************  Student Related ***************@
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Student<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="http://localhost:50735/RegisterStudent/Save">Register Student</a></li>
+                    <li><a href="http://localhost:50735/EnrollCourse/EnrollCourse">Enroll In A Course</a></li>
+                    <li><a href="http://localhost:50735/Student/SaveStudentResult">Save Student Result</a></li>
+                    <li><a href="http://localhost:50735/ViewResult/ViewStudentResult">View Student Result</a></li>
+                </ul>
+            </li>
+
+
+            @***************  Class Room Related ***************@
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Room<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="http://localhost:50735/ClassRoomAlocation/ClassroomAllocation">Allocate Classrom</a></li>
+                    <li><a href="http://localhost:50735/ClassScheduleAndRoomAllocationInformation/ViewClassAndRoomByDeptId">View Class Shedule & Room Allocation</a></li>
+                    <li><a href="http://localhost:50735/ClassRoomAlocation/UnallocateClassRooms">Unallocate All Classroom</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+﻿
+@{
+    Layout = null;
+    List<SelectListItem> RegistrationNoget = ViewBag.RegistrationNo;
+    List<SelectListItem> Grade = ViewBag.Grade;
+}
+
+@*<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SaveStudentResult</title>
+</head>
+<body>*@
+
+    @********************************** For 11th Story *****************************************************@
+
+    <h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">Save Student Result</h1>
+
+<div style="width: 550px; margin-left: 400px; margin-top: 80px">
+    <table>
+        <tr>
+            <td>
+                <label id="registrationDropDownLabel"> Student Reg. No</label>
+            </td>
+            <td>
+                @Html.DropDownList("RegistrationNo", new SelectList(RegistrationNoget, "Value", "Text"))
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <label id="NameLabel"> Name</label>
+            </td>
+            <td>
+                <input type="text" name="StudentName" id="StudentName" readonly="readonly" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="emailLabel"> Email</label>
+            </td>
+            <td>
+                <input type="text" name="StudentEmail" id="StudentEmail" readonly="readonly"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="departmentLabel"> Department</label>
+            </td>
+            <td>
+
+                <input type="text" name="DepartmentName" id="DepartmentName" readonly="readonly"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="selectCourseLabel"> Select Course</label>
+            </td>
+            <td>
+                <select name="courseId" id="courseId">
+                    <option value="">Select Course</option>
+                </select>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <label id="selectGradeLetterLabel"> Select Grade Letter Course</label>
+            </td>
+            <td>
+                @Html.DropDownList("gradeName", new SelectList(Grade, "Value", "Text"))
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+
+                <input type="submit" id="submit" name="submit" value="Save"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+                <label id="SucessMessage"></label>
+            </td>
+
+        </tr>
+</table>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('#RegistrationNo').change(function() {
+
+
+                var registrationNo = $('#RegistrationNo').val();
+
+
+                var json = { regNo: registrationNo };
+
+
+                $.ajax({
+                    type: "POST",
+
+                    url: '@Url.Action("GetStudentByRegNo", "Student")',
+                    //url: '/Department/GetStudentsByDepartmentId',
+
+                    contentType: "application/json; charset=utf-8",
+
+                    data: JSON.stringify(json),
+
+                    success: function(data) {
+
+                        $("#StudentId").empty();
+                        $("#StudentName").empty();
+                        $("#StudentEmail").empty();
+
+                        $("#DepartmentName").empty();
+                        $("#StudentId").empty();
+
+                        $("#StudentId").append('<option value="">--Select--</option>');
+
+
+                        $.each(data, function(key, value) {
+                            //$("StudentIdl").append(value.Email);
+                            $("#StudentName").val(value.StudentName);
+                            $("#StudentEmail").val(value.StudentEmail);
+                            $("#DepartmentName").val(value.DepartmentName);
+                            console.log(value.StudentId);
+                            var json = { regNo: value.StudentId };
+
+
+                            $("#courseId").empty();
+                            $("#courseId").append('<option value=' + "" + '>' + "Select Course" + '</option>');
+                            var jsonData1 = { studentId: value.StudentId };
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("GetCourseByStudentId", "Student")',
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify(jsonData1),
+                                dataType: "json",
+                                success: function(datac) {
+                                    $.each(datac, function(keyc, valuec) {
+
+                                        $("#courseId").append('<option value=' + valuec.CourseId + '>' + valuec.CourseName + '</option>');
+                                    });
+                                },
+
+                            });
+
+                        });
+                    }
+
+                });
+            });
+        });
+
+
+        $("#submit").click(function() {
+
+            if ($('#courseId').val() == "") {
+                alert('Please Select Reg No. & Course');
+            }
+            else if ($('#gradeName').val() == "") {
+                alert('Please Select Grade');
+            }
+            else {
+
+                var regNo = $("#RegistrationNo").val();
+
+                var courseId = $("#courseId").val();
+
+                var gradeId = $("#gradeName").val();
+                console.log(gradeId);
+
+
+                var jsonData = { registrationNo: regNo, courseId: courseId, GradeId: gradeId };
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetInfo", "Student")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(jsonData),
+                dataType: "json",
+                success: function(data1) {
+                    if (gradeId != null) {
+                        $("#SucessMessage").text(data1);
+                    }
+
+
+                    $.each(data1, function(key1, value1) {
+
+                    })
+                }
+            });
+
+}
+        });
+
+
+    </script>
+
+</div>
+
+@*</body>
+</html>*@

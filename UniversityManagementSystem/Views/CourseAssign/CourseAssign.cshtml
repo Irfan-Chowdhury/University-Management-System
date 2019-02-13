@@ -1,0 +1,276 @@
+﻿@using UniversityManagementSystem.Models
+@model UniversityManagementSystem.Models.Teacher
+
+@{
+    Layout = null;
+    List<SelectListItem> departments = ViewBag.Departments;
+    //List<SelectListItem> courses = ViewBag.Courses;
+    ViewBag.Title = "CourseAssign";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@************************************  For 5th Story **********************************************@
+
+
+<h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">Course Assign To Teacher</h1>
+
+<div style="width: 550px; margin-left: 400px; margin-top: 80px">
+        @if (ViewBag.Message != null)
+        {
+            <h3 style="color: red">@ViewBag.Message</h3>
+        }
+
+        @*onsubmit = "return myFunction()"*@
+
+
+        @*@using (Html.BeginForm("CourseAssign", "CourseAssign", FormMethod.Post, new { }))*@
+        
+        @using (Html.BeginForm("CourseAssign", "CourseAssign", FormMethod.Post, new { id = "MyForm" }))
+        {
+
+
+            <br/><br/>
+
+            <table>
+                <tr>
+                    <td>@Html.Label("Department")</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DepartmentId, new SelectList(departments, "Value", "Text"))
+                        @Html.ValidationMessageFor(x=>x.DepartmentId)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>@Html.Label("Teacher")</td>
+                    <td>
+                        <select id="TeacherId" name="TeacherId">
+                            <option>--Select--</option>
+                        </select>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td></td>
+                    <td>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>@Html.Label("Credit to be Taken")</td>
+                    <td>
+                        <input type="text" readonly="readonly" name="Credit" id="Credit" />
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>@Html.Label("Remaining Credit")</td>
+                    <td>
+                        <input type="text" readonly="readonly" name="RemainingCredit" id="RemainingCredit" /><br />
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td>@Html.Label("Course Code")</td>
+                    <td>
+                        <select id="CourseId" name="CourseId">
+                            <option>--Select--</option>
+                        </select>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>@Html.Label("Course Name")</td>
+                    <td>
+                        <input type="text" readonly="readonly" name="CourseName" id="CourseName" /><br />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>@Html.Label("Credit")</td>
+                    <td>
+                        <input type="text" readonly="readonly" name="CourseCredit" id="CourseCredit" /><br /><br />
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        <input type="submit" value="Assign" onclick="return myFunction()" /> 
+                    </td>
+                </tr>
+
+                @*<button onclick="myFunction()">Assign</button>*@
+
+            </table>
+            
+                     
+        }
+
+    </div>
+   
+
+ <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>   
+
+<script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+<script type="text/javascript">
+    //********************** For Alert *******************************
+
+    function myFunction() {
+        if ($("#RemainingCredit").val() - $("#CourseCredit").val() < 0.0) {
+            var ans = confirm("Teacher's Remaining Credit goes to Negetive Value. Are You Sure ?");
+            if (ans===true) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        
+    }
+
+
+
+    //******************** Main Part ************************************
+
+    $(document).ready(function () {
+
+        $("#DepartmentId").change(function () {  //--->150
+
+            var deptId = $("#DepartmentId").val();
+          
+            var json = { departmentId: deptId };
+
+
+
+            //*************************** GetTeachersByDepartmentId *****************
+
+            $.ajax({
+
+                type: "POST",
+
+                url: '@Url.Action("GetTeachersByDepartmentId", "CourseAssign")',
+
+                contentType: "application/json; charset=utf-8",
+
+                data: JSON.stringify(json),
+
+                success: function (data) {
+
+                    $("#TeacherId").empty();
+                    $("#TeacherId").append('<option>--Select--</option>');
+
+
+                    $.each(data, function (key, value) {
+
+                        $("#TeacherId").append('<option value="' + value.Id + '">' + value.TeacherName + '</option>');
+
+                    });
+                }
+            });
+
+
+            //*************************** Get Course Code By DepartmentId *****************
+
+            $.ajax({
+
+                type: "POST",
+
+                url: '@Url.Action("GetCoursesByDepartmentId", "CourseAssign")',
+
+                contentType: "application/json; charset=utf-8",
+
+                data: JSON.stringify(json),
+
+                success: function (data) {
+
+                    $("#CourseId").empty();
+                    $("#CourseId").append('<option>--Select--</option>');
+
+
+                    $.each(data, function (key, value) {
+
+                        $("#CourseId").append('<option value="' + value.Id + '">' + value.CourseCode + '</option>');
+
+                    });
+                }
+            });
+
+        });   //<<-----81
+
+
+        //********************** credit to be taken (Teacher)*************************
+
+        $("#TeacherId").change(function () { // 137--->>
+            var teacherId = $("#TeacherId").val();
+            $("#Credit").empty();
+            $("#Credit").val("");
+            $("#RemainingCredit").val("");
+            var json = {
+                teacherId: teacherId
+
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetTeacherDetailsById", "CourseAssign")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+                    $("#Credit").val(data.CreditTaken);
+                    $("#RemainingCredit").val(data.CreditTaken - data.TotalTeacherCreditTaken);
+                }
+            });
+        });  //<<---118
+
+        //************************** Course Name & Course Code ************************************************
+
+        $("#CourseId").change(function () {
+            var courseId = $("#CourseId").val();
+            $("#CourseName").val("");
+            $("#CourseCredit").val("");
+            var json = {
+                courseId: courseId
+
+            };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCourseDetailsById", "CourseAssign")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+                    $("#CourseName").val(data.CourseName);
+                    $("#CourseCredit").val(data.CourseCredit);
+                }
+            });
+        });
+
+
+
+
+
+    });
+</script>
+
+        @*}
+
+    </div>*@
+
+
+    
+
+
+
+
+
+@*</body>
+</html>*@
+

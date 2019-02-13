@@ -1,0 +1,83 @@
+﻿
+@{
+    Layout = null;
+}
+
+<title>Unallocate</title>
+<style>
+    .button {
+        display: inline-block;
+        border-radius: 4px;
+        background-color: #f4511e;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 28px;
+        padding: 20px;
+        width: 200px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 80px;
+    }
+
+    .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+
+    .button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+    }
+
+    .button:hover span {
+        padding-right: 25px;
+    }
+
+    .button:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+</style>
+
+@************************************* For 14th Story  *****************************************@
+
+<h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">Unallocate All ClassRooms</h1>
+
+<div style="width: 550px; margin-left: 400px; margin-top: 80px">
+    @if (ViewBag.Message != null)
+    {
+        <h3 style="color: red">@ViewBag.Message</h3>
+    }
+    
+    @*onsubmit = "return myFunction()"*@
+
+    @using (Html.BeginForm("UnallocateClassRooms", "ClassRoomAlocation", FormMethod.Post, new {  }))  
+    {
+        <table>
+            <tr>
+                <td>
+                    <button class="button" style="vertical-align:middle" onclick="return myFunction()" ><span>Unallocate ClassRooms</span></button>
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+
+<script>
+
+    function myFunction() {
+        var unassign = confirm("Are you sure to Unallocate all Classrooms ? ");
+        if (unassign === true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>

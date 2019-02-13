@@ -1,0 +1,174 @@
+﻿@model UniversityManagementSystem.Models.Course
+@*@model UniversityManagementSystem.Models.Department*@
+
+@{
+    Layout = null;
+    ViewBag.Title = "CourseSave";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    @********************************** For 3rd Story *****************************************************@
+
+    <h1 style="text-align: center; color: #27BDB2; display: block;font-size: 2em;margin-top: 1.67em;font-weight: bold ">Course Save</h1>
+
+    <div style="width: 550px; margin-left: 400px; margin-top: 80px">
+
+        @if (ViewBag.Message != null)
+        {
+            <h3 style="color: red">@ViewBag.Message</h3>
+        }
+        @using (Html.BeginForm("CourseSave", "Course", FormMethod.Post, new { id = "MyForm" }))
+        {
+            <br /><br />
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(x => x.CourseCode)</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CourseCode)
+                        @Html.ValidationMessageFor(x => x.CourseCode)
+                    </td>
+                </tr>
+
+                
+                <tr>
+                    <td>@Html.LabelFor(x => x.CourseName)</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CourseName)
+                        @Html.ValidationMessageFor(x => x.CourseName)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.CourseCredit)</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CourseCredit)
+                        @Html.ValidationMessageFor(x => x.CourseCredit)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.CourseDescription)</td>
+                    <td>
+                        @Html.TextBoxFor(x => x.CourseDescription)
+                        @Html.ValidationMessageFor(x => x.CourseDescription)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.DepartmentId)</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.DepartmentId, new SelectList(ViewBag.departments, "Value", "Text"))
+                        @Html.ValidationMessageFor(x => x.DepartmentId)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(x => x.SemesterId)</td>
+                    <td>
+                        @Html.DropDownListFor(x => x.SemesterId, new SelectList(ViewBag.semesters, "Value", "Text"), "--Select--")
+                        @Html.ValidationMessageFor(x => x.SemesterId)
+                    </td> 
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="submit" value="Save" />
+                    </td>
+                </tr>
+            </table>
+
+
+        }
+    
+    </div>
+
+
+        <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+@*</body>
+</html>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<form id="itemSaveForm" method="POST">
+    <table>
+        <tr>
+            <td><label for="CourseCode">Course Code</label></td>
+            <td><input type="text" id="CourseCode" name="CourseCode" /></td>
+        </tr>
+
+        <tr>
+            <td><label for="CourseName">Course Name</label></td>
+            <td><input type="text" id="CourseName" name="CourseName" /></td>
+        </tr>
+
+        <tr>
+            <td><label for="CourseCredit">Course Credit</label></td>
+            <td><input type="text" id="CourseCredit" name="CourseCredit" /></td>
+        </tr>
+
+        <tr>
+            <td><label for="CourseDescription">Course Description</label></td>
+            <td><input type="text" id="CourseDescription" name="CourseDescription" /></td>
+        </tr>*@
+
+
+
+
+@*******************for department drop down ******************@
+
+@*<tr>
+        <td><label for="">Department</label></td>
+        <td>
+            <select id="DepartmentId" name="DepartmentId">
+                @foreach (Department department in ViewBag.departmentList)
+                {
+                    <option value="@department.Id">@department.DepartmentName</option>
+                }
+            </select>
+        </td>
+    </tr>*@
+
+@*******************for Semester drop down ******************@
+
+@*<tr>
+                <td><label for="">Semester</label></td>
+                <td>
+                    <select id="SemesterId" name="SemesterId">
+                        @foreach (Semester semester in ViewBag.semesterList)
+                        {
+                            <option value="@semester.Id">@semester.SemesterName</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <input type="submit" />
+                </td>
+            </tr>
+        </table>
+    </form>*@
+
+
+
+
